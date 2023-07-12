@@ -83,7 +83,7 @@ int main(int argc, char **argv)
                         --cursorPos;
                     break;
                 case -18: // right arrow
-                    if (cursorPos + 1 <= document.size())
+                    if ((size_t)(cursorPos + 1) <= document.size())
                         ++cursorPos;
                     break;
                 case -23: // escape thing
