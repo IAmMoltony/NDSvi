@@ -182,8 +182,6 @@ int main(int argc, char **argv)
                     }
                 }
             }
-            else
-                printf("Normal mode");
             break;
         case editmodeInsert:
             printf("Insert mode");
