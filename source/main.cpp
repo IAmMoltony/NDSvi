@@ -184,7 +184,7 @@ int main(int argc, char **argv)
             }
             break;
         case editmodeInsert:
-            printf("Insert mode");
+            printf("-- INSERT --");
             break;
         }
 
