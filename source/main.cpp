@@ -117,6 +117,18 @@ int main(int argc, char **argv)
                             cursorPos = document.size();
                     }
                     break;
+                case 'o':
+                    if (cursorPos < document.size())
+                    {
+                        size_t currentLineEnd = document.find('\n', cursorPos);
+                        if (currentLineEnd != std::string::npos)
+                            cursorPos = currentLineEnd;
+                        else
+                            cursorPos = document.size();
+                    }
+                    document.insert(cursorPos++, 1, '\n');
+                    editMode = EditorMode_Insert;
+                    break;
                 case ':':
                     commandEnter = true;
                     break;
