@@ -7,7 +7,6 @@ NDSvi is a text editor for Nintendo DS heavily inspired by Vi.
 
 - dd (delete line)
 - hjkl navigation
-- $ (move cursor to end of line)
 - gg (move cursor to first line)
 - G (move cursor to last line)
 - :&lt;number&gt; (move cursor to specific line)

@@ -107,6 +107,16 @@ int main(int argc, char **argv)
                             cursorPos = 0;
                     }
                     break;
+                case '$':
+                    if (cursorPos < document.size())
+                    {
+                        size_t currentLineEnd = document.find('\n', cursorPos);
+                        if (currentLineEnd != std::string::npos)
+                            cursorPos = currentLineEnd;
+                        else
+                            cursorPos = document.size();
+                    }
+                    break;
                 case ':':
                     commandEnter = true;
                     break;
