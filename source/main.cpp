@@ -213,7 +213,7 @@ int main(int argc, char **argv)
                         waitButton();
                     }
                 }
-                else
+                else if (command != "")
                 {
                     printf("Invalid command. Press a button to continue.");
                     waitButton();
