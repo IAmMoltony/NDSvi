@@ -97,6 +97,16 @@ int main(int argc, char **argv)
                 case 'i':
                     editMode = EditorMode_Insert;
                     break;
+                case '0':
+                    if (cursorPos > 0)
+                    {
+                        size_t currentLineStart = document.rfind('\n', cursorPos - 1);
+                        if (currentLineStart != std::string::npos)
+                            cursorPos = currentLineStart + 1;
+                        else
+                            cursorPos = 0;
+                    }
+                    break;
                 case ':':
                     commandEnter = true;
                     break;
