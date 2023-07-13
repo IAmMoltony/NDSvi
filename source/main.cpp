@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <filesystem.h>
 
 typedef enum
 {
@@ -43,8 +44,11 @@ int main(int argc, char **argv)
         while (true)
             ;
     }
-    printf("ok\n");
-
+    printf("ok\nInitializing NitroFS... ");
+    if (!nitroFSInit(NULL))
+    {
+        printf("failed!\n\nThis shouldn't happen. If this happens, then it's a bug.");
+    }
     std::string document;
     std::string fileName;
     int cursorPos = 0;
