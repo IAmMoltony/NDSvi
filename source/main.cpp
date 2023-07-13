@@ -195,7 +195,7 @@ int main(int argc, char **argv)
                 }
             exitCommandEnter:
                 putchar('\n');
-                if (command == "w")
+                if (command == "w" || command == "write")
                 {
                     if (fileName == "")
                     {
