@@ -3,6 +3,7 @@
 #include <fat.h>
 #include <string>
 #include <sstream>
+#include <vector>
 
 typedef enum
 {
@@ -210,6 +211,31 @@ int main(int argc, char **argv)
                         fwrite(document.c_str(), sizeof(char), document.size(), fp); // TODO add error-checking
                         fclose(fp);
                         printf("Saved. Press a button to continue.");
+                        waitButton();
+                    }
+                }
+                else if (command.rfind("open", 0) == 0)
+                {
+                    std::string openFileName = command.substr(4);
+                    if (openFileName.empty())
+                    {
+                        printf("No file name. Press a button to continue.");
+                        waitButton();
+                    }
+                    openFileName.erase(0, 1); // remove space
+
+                    // open file
+                    FILE *fp = fopen(std::string("fat:/" + openFileName).c_str(), "r");
+                    if (fp)
+                    {
+                        document = "";
+                        int c;
+                        while ((c = getc(fp)) != EOF)
+                            document += c;
+                    }
+                    else
+                    {
+                        perror(std::string("Error opening " + openFileName).c_str());
                         waitButton();
                     }
                 }
