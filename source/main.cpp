@@ -48,7 +48,24 @@ int main(int argc, char **argv)
     if (!nitroFSInit(NULL))
     {
         printf("failed!\n\nThis shouldn't happen. If this happens, then it's a bug.");
+        while (true)
+            ;
     }
+
+    std::string version;
+    {
+        FILE *fp = fopen("nitro:/NDSviVersion.txt", "r");
+        if (!fp)
+        {
+            perror("Error opening NDSviVersion.txt");
+            while (true)
+                ;
+        }
+        int c;
+        while ((c = getc(fp)) != EOF)
+            version += c;
+    }
+
     std::string document;
     std::string fileName;
     int cursorPos = 0;
@@ -242,6 +259,13 @@ int main(int argc, char **argv)
                         perror(std::string("Error opening " + openFileName).c_str());
                         waitButton();
                     }
+                }
+                else if (command == "version")
+                {
+                    consoleClear();
+                    printf("NDSvi - Nintendo DS Vi\nVersion %s (compiled %s %s)\n\nPress a button to continue.",
+                           version.c_str(), __DATE__, __TIME__);
+                    waitButton();
                 }
                 else if (command != "")
                 {
