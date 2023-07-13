@@ -235,14 +235,22 @@ int main(int argc, char **argv)
                         waitButton();
                     }
                 }
-                else if (command.rfind("open", 0) == 0)
+                else if (command.rfind("open", 0) == 0 || command.rfind("e", 0) == 0)
                 {
-                    std::string openFileName = command.substr(4);
+                    // extract file name
+                    std::string openFileName;
+                    if (command.rfind("e", 0) == 0)
+                        openFileName = command.substr(1);
+                    else
+                        openFileName = command.substr(4);
+
+                    // check for no file name
                     if (openFileName.empty())
                     {
                         printf("No file name. Press a button to continue.");
                         waitButton();
                     }
+
                     openFileName.erase(0, 1); // remove space
 
                     // open file

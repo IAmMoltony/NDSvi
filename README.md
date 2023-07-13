@@ -20,4 +20,3 @@ NDSvi is a text editor for Nintendo DS heavily inspired by Vi.
 - O (insert new line above current line and switch to insert mode)
 - x (delete char under cursor)
 - yy (copy current line)
-- :e filename (same as open filename)
