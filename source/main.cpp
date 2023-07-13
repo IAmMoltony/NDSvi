@@ -6,8 +6,8 @@
 
 typedef enum
 {
-    editmodeNormal,
-    editmodeInsert,
+    EditorMode_Normal,
+    EditorMode_Insert,
 } EditorMode;
 
 void waitButton(void)
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     u16 frames = 0;
     bool cursorBlink = false;
     int lastCh = 0;
-    EditorMode editMode = editmodeNormal;
+    EditorMode editMode = EditorMode_Normal;
     bool commandEnter = false;
 
     while (true)
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
         int ch = keyboardUpdate();
         switch (editMode)
         {
-        case editmodeNormal:
+        case EditorMode_Normal:
             if (ch != -1)
                 lastCh = ch;
             if (ch)
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
                 switch (tolower(ch))
                 {
                 case 'i':
-                    editMode = editmodeInsert;
+                    editMode = EditorMode_Insert;
                     break;
                 case ':':
                     commandEnter = true;
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
                 }
             }
             break;
-        case editmodeInsert:
+        case EditorMode_Insert:
             if (ch != -1)
                 lastCh = ch;
             if (ch)
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
                         ++cursorPos;
                     break;
                 case -23: // escape thing
-                    editMode = editmodeNormal;
+                    editMode = EditorMode_Normal;
                     break;
                 default:
                     if (ch > 0)
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
         printf("%d\n", lastCh);
         switch (editMode)
         {
-        case editmodeNormal:
+        case EditorMode_Normal:
             if (commandEnter)
             {
                 putchar(':');
@@ -220,7 +220,7 @@ int main(int argc, char **argv)
                 }
             }
             break;
-        case editmodeInsert:
+        case EditorMode_Insert:
             printf("-- INSERT --");
             break;
         }
