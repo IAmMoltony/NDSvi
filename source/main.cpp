@@ -141,6 +141,9 @@ int main(int argc, char **argv)
                     document.insert(cursorPos, 1, '\n');
                     editMode = EditorMode_Insert;
                     break;
+                case 'G':
+                    cursorPos = document.size() - 1;
+                    break;
                 case ':':
                     commandEnter = true;
                     break;
