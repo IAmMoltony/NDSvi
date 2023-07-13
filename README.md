@@ -14,6 +14,5 @@ NDSvi is a text editor for Nintendo DS heavily inspired by Vi.
 - b (move cursor to beginning of pervious word)
 - ctrl + f (move forward one page)
 - crtl + b (move backward one page)
-- O (insert new line above current line and switch to insert mode)
 - x (delete char under cursor)
 - yy (copy current line)

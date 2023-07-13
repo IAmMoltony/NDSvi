@@ -92,7 +92,7 @@ int main(int argc, char **argv)
             {
                 // key pressed
 
-                switch (tolower(ch))
+                switch (ch)
                 {
                 case 'i':
                     editMode = EditorMode_Insert;
@@ -127,6 +127,18 @@ int main(int argc, char **argv)
                             cursorPos = document.size();
                     }
                     document.insert(cursorPos++, 1, '\n');
+                    editMode = EditorMode_Insert;
+                    break;
+                case 'O':
+                    if (cursorPos > 0)
+                    {
+                        size_t currentLineStart = document.rfind('\n', cursorPos - 1);
+                        if (currentLineStart != std::string::npos)
+                            cursorPos = currentLineStart + 1;
+                        else
+                            cursorPos = 0;
+                    }
+                    document.insert(cursorPos, 1, '\n');
                     editMode = EditorMode_Insert;
                     break;
                 case ':':
