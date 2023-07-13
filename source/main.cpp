@@ -10,6 +10,17 @@ typedef enum
     editmodeInsert,
 } EditorMode;
 
+void waitButton(void)
+{
+    while (true)
+    {
+        scanKeys();
+        if (keysDown() && !(keysDown() & KEY_TOUCH))
+            break;
+        swiWaitForVBlank();
+    }
+}
+
 int main(int argc, char **argv)
 {
     PrintConsole topScreen;
@@ -34,6 +45,7 @@ int main(int argc, char **argv)
     printf("ok\n");
 
     std::string document;
+    std::string fileName;
     int cursorPos = 0;
     u16 frames = 0;
     bool cursorBlink = false;
@@ -163,23 +175,48 @@ int main(int argc, char **argv)
                 putchar('\n');
                 if (command == "w")
                 {
-                    printf("write to file here...... press a button");
-                    while (true)
+                    if (fileName == "")
                     {
-                        scanKeys();
-                        if (keysDown() && !(keysDown() & KEY_TOUCH))
-                            break;
+                        // file name prompt
+                        printf("File name: ");
+                        while (true)
+                        {
+                            int ch = keyboardUpdate();
+
+                            if (ch == -23)
+                                goto gameLoopEnd;
+                            if (ch == -1)
+                                continue;
+                            if (ch == '\n')
+                                break;
+
+                            if (ch > 0)
+                            {
+                                fileName += ch;
+                                putchar(ch);
+                            }
+                        }
+                    }
+                    putchar('\n');
+
+                    FILE *fp = fopen(std::string("fat:/" + fileName).c_str(), "w");
+                    if (!fp)
+                    {
+                        perror(std::string("Error saving " + fileName).c_str());
+                        waitButton();
+                    }
+                    else
+                    {
+                        fwrite(document.c_str(), sizeof(char), document.size(), fp); // TODO add error-checking
+                        fclose(fp);
+                        printf("Saved. Press a button to continue.");
+                        waitButton();
                     }
                 }
                 else
                 {
                     printf("Invalid command. Press a button to continue.");
-                    while (true)
-                    {
-                        scanKeys();
-                        if (keysDown())
-                            break;
-                    }
+                    waitButton();
                 }
             }
             break;
@@ -190,6 +227,7 @@ int main(int argc, char **argv)
 
         commandEnter = false;
 
+    gameLoopEnd:
         ++frames;
         swiWaitForVBlank();
     }
