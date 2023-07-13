@@ -1,4 +1,4 @@
 
 # NDSvi
 
-NDSvi is a Vi-like text editor for Nintendo DS.
+NDSvi is a text editor for Nintendo DS heavily inspired by Vi.
