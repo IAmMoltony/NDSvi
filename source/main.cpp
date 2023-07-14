@@ -74,6 +74,7 @@ int main(int argc, char **argv)
     int lastCh = 0;
     EditorMode editMode = EditorMode_Normal;
     bool commandEnter = false;
+    bool ddKey = false;
 
     while (true)
     {
@@ -95,9 +96,11 @@ int main(int argc, char **argv)
                 switch (ch)
                 {
                 case 'i':
+                    ddKey = false;
                     editMode = EditorMode_Insert;
                     break;
                 case '0':
+                    ddKey = false;
                     if (cursorPos > 0)
                     {
                         size_t currentLineStart = document.rfind('\n', cursorPos - 1);
@@ -108,6 +111,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 case '$':
+                    ddKey = false;
                     if (cursorPos < document.size())
                     {
                         size_t currentLineEnd = document.find('\n', cursorPos);
@@ -118,6 +122,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 case 'o':
+                    ddKey = false;
                     if (cursorPos < document.size())
                     {
                         size_t currentLineEnd = document.find('\n', cursorPos);
@@ -130,6 +135,7 @@ int main(int argc, char **argv)
                     editMode = EditorMode_Insert;
                     break;
                 case 'O':
+                    ddKey = false;
                     if (cursorPos > 0)
                     {
                         size_t currentLineStart = document.rfind('\n', cursorPos - 1);
@@ -142,7 +148,35 @@ int main(int argc, char **argv)
                     editMode = EditorMode_Insert;
                     break;
                 case 'G':
+                    ddKey = false;
                     cursorPos = document.size() - 1;
+                    break;
+                case 'd':
+                    if (!ddKey)
+                        ddKey = true;
+                    else
+                    {
+                        ddKey = false;
+
+                        size_t currentLineStart = document.rfind('\n', cursorPos - 1);
+                        size_t currentLineEnd = document.find('\n', cursorPos);
+
+                        if (currentLineStart != std::string::npos)
+                            currentLineStart++;
+                        else
+                            currentLineStart = 0;
+
+                        if (currentLineEnd == std::string::npos)
+                            currentLineEnd = document.size();
+                        else
+                            currentLineEnd++;
+                        document.erase(currentLineStart, currentLineEnd - currentLineStart);
+
+                        if (currentLineStart > 0)
+                            cursorPos = currentLineStart - 1;
+                        else
+                            cursorPos = 0;
+                    }
                     break;
                 case ':':
                     commandEnter = true;
