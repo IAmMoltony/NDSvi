@@ -68,6 +68,7 @@ int main(int argc, char **argv)
 
     std::string document;
     std::string fileName;
+    std::string clipboard;
     int cursorPos = 0;
     u16 frames = 0;
     bool cursorBlink = false;
@@ -76,6 +77,7 @@ int main(int argc, char **argv)
     bool commandEnter = false;
     bool ddKey = false;
     bool ggKey = false;
+    bool yyKey = false;
 
     while (true)
     {
@@ -97,11 +99,11 @@ int main(int argc, char **argv)
                 switch (ch)
                 {
                 case 'i':
-                    ddKey = ggKey = false;
+                    ddKey = ggKey = yyKey = false;
                     editMode = EditorMode_Insert;
                     break;
                 case '0':
-                    ddKey = ggKey = false;
+                    ddKey = ggKey = yyKey = false;
                     if (cursorPos > 0)
                     {
                         size_t currentLineStart = document.rfind('\n', cursorPos - 1);
@@ -112,7 +114,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 case '$':
-                    ddKey = ggKey = false;
+                    ddKey = ggKey = yyKey = false;
                     if (cursorPos < document.size())
                     {
                         size_t currentLineEnd = document.find('\n', cursorPos);
@@ -123,7 +125,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 case 'o':
-                    ddKey = ggKey = false;
+                    ddKey = ggKey = yyKey = false;
                     if (cursorPos < document.size())
                     {
                         size_t currentLineEnd = document.find('\n', cursorPos);
@@ -136,7 +138,7 @@ int main(int argc, char **argv)
                     editMode = EditorMode_Insert;
                     break;
                 case 'O':
-                    ddKey = ggKey = false;
+                    ddKey = ggKey = yyKey = false;
                     if (cursorPos > 0)
                     {
                         size_t currentLineStart = document.rfind('\n', cursorPos - 1);
@@ -149,11 +151,11 @@ int main(int argc, char **argv)
                     editMode = EditorMode_Insert;
                     break;
                 case 'G':
-                    ddKey = ggKey = false;
+                    ddKey = ggKey = yyKey = false;
                     cursorPos = document.size() - 1;
                     break;
                 case 'd':
-                    ggKey = false;
+                    ggKey = yyKey = false;
                     if (!ddKey)
                         ddKey = true;
                     else
@@ -181,7 +183,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 case 'g':
-                    ddKey = false;
+                    ddKey = yyKey = false;
                     if (!ggKey)
                         ggKey = true;
                     else
@@ -189,6 +191,34 @@ int main(int argc, char **argv)
                         ggKey = false;
                         cursorPos = 0;
                     }
+                    break;
+                case 'y':
+                    ddKey = ggKey = false;
+                    if (!yyKey)
+                        yyKey = true;
+                    else
+                    {
+                        yyKey = false;
+
+                        size_t currentLineStart = document.rfind('\n', cursorPos - 1);
+                        size_t currentLineEnd = document.find('\n', cursorPos);
+
+                        if (currentLineStart != std::string::npos)
+                            currentLineStart++;
+                        else
+                            currentLineStart = 0;
+
+                        if (currentLineEnd == std::string::npos)
+                            currentLineEnd = document.size();
+                        else
+                            currentLineEnd++;
+
+                        clipboard = '\n' + document.substr(currentLineStart, currentLineEnd - currentLineStart);
+                    }
+                    break;
+                case 'p':
+                    ddKey = ggKey = yyKey = false;
+                    document.insert(cursorPos, clipboard);
                     break;
                 case ':':
                     commandEnter = true;
