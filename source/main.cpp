@@ -75,6 +75,7 @@ int main(int argc, char **argv)
     EditorMode editMode = EditorMode_Normal;
     bool commandEnter = false;
     bool ddKey = false;
+    bool ggKey = false;
 
     while (true)
     {
@@ -96,11 +97,11 @@ int main(int argc, char **argv)
                 switch (ch)
                 {
                 case 'i':
-                    ddKey = false;
+                    ddKey = ggKey = false;
                     editMode = EditorMode_Insert;
                     break;
                 case '0':
-                    ddKey = false;
+                    ddKey = ggKey = false;
                     if (cursorPos > 0)
                     {
                         size_t currentLineStart = document.rfind('\n', cursorPos - 1);
@@ -111,7 +112,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 case '$':
-                    ddKey = false;
+                    ddKey = ggKey = false;
                     if (cursorPos < document.size())
                     {
                         size_t currentLineEnd = document.find('\n', cursorPos);
@@ -122,7 +123,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 case 'o':
-                    ddKey = false;
+                    ddKey = ggKey = false;
                     if (cursorPos < document.size())
                     {
                         size_t currentLineEnd = document.find('\n', cursorPos);
@@ -135,7 +136,7 @@ int main(int argc, char **argv)
                     editMode = EditorMode_Insert;
                     break;
                 case 'O':
-                    ddKey = false;
+                    ddKey = ggKey = false;
                     if (cursorPos > 0)
                     {
                         size_t currentLineStart = document.rfind('\n', cursorPos - 1);
@@ -148,10 +149,11 @@ int main(int argc, char **argv)
                     editMode = EditorMode_Insert;
                     break;
                 case 'G':
-                    ddKey = false;
+                    ddKey = ggKey = false;
                     cursorPos = document.size() - 1;
                     break;
                 case 'd':
+                    ggKey = false;
                     if (!ddKey)
                         ddKey = true;
                     else
@@ -176,6 +178,16 @@ int main(int argc, char **argv)
                             cursorPos = currentLineStart - 1;
                         else
                             cursorPos = 0;
+                    }
+                    break;
+                case 'g':
+                    ddKey = false;
+                    if (!ggKey)
+                        ggKey = true;
+                    else
+                    {
+                        ggKey = false;
+                        cursorPos = 0;
                     }
                     break;
                 case ':':
