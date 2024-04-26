@@ -3,6 +3,10 @@
 
 NDSvi is a text editor for Nintendo DS heavily inspired by Vi.
 
+# Notice
+
+This project is [**no longer maintained**](https://iammoltony.github.io/abandonware.html#ap8).
+
 ## To do
 
 - hjkl navigation
